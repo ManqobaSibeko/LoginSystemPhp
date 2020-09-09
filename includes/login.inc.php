@@ -6,10 +6,10 @@ if (isset($_POST['login-submit'])){
     $mailUid = $_POST['mailuid'];
     $password = $_POST['pwd'];
 
-    if (empty($mailUid)||empty($password)||empty($passwordRepeat)){
+    if (empty($mailUid)||empty($password)){
 
         //header function that will take/link you back to the header page
-        header("Location:../index.php?error=emptyfields&uid=".$mailUid."&mail=".$email);
+        header("Location:../index.php?error=emptyfields&uid=".$mailUid);
         exit();
 
     }else{
@@ -33,7 +33,8 @@ if (isset($_POST['login-submit'])){
 
             if ($row= mysqli_fetch_assoc($result)){
 
-                $pwdCheck = password_verify($password,$row['pwdUser'])
+                $pwdCheck = password_verify($password,$row['pwdUser']);
+
                 if($pwdCheck ==false){
 
                     header("Location:../index.php?error=wrongpwd");
@@ -43,16 +44,20 @@ if (isset($_POST['login-submit'])){
                     session_start();
                     $_SESSION['userId']= $row['idusers'];
                     $_SESSION['userUid']= $row['uidusers'];
-                      header("Location:../index.php?login=success");
-            exit();
+                    header("Location:../index.php?login=success");
+                    exit();
                 }
+
             }else{
                 
-             header("Location:../index.php?error=nouser");
-            exit();
+              header("Location:../index.php?error=nouser");
+              exit();
             }
-    }
-}else{
-             header("Location:../index.php");
-                        exit();
+         }
+     }
 }
+
+// else{
+//     header("Location:../index.php");
+//     exit();
+// }
